@@ -16,10 +16,15 @@ pipeline {
         choice(name: 'CHOICE', choices: ['One', 'Two', 'Three'], description: 'Pick something')
         password(name: 'PASSWORD', defaultValue: 'SECRET', description: 'Enter a password')
     }
+    environment {
+        DEPLOY_TO ='PRODUCTION'
+        GREETING = 'Good Morning'
+    }
     stages {
         stage('Build') {
             steps {
              sh 'echo this is build'
+             sh 'env'
             }
         }
         stage('Test') {
@@ -46,6 +51,17 @@ pipeline {
 
                 echo "triggered test"
             }
+        }
+    }
+    post {
+        always {
+            echo 'I will always say Hello again!'
+        }
+        success {
+            echo 'I will Run when pipeline is success'
+        }
+        failure {
+            echo 'I will run when Pipeline is Failure'
         }
     }
 }
